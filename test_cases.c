@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include "sender_config.h"
 #include "sender.h"
 #include "fileoperations.h"
 #include "test_cases.h"
@@ -23,19 +24,30 @@ void test_sensorRead(void)
     // The sensor values will be stored in files with "," separated.
     int sensor1[10];
     int count = 0;
-    const char* file = "sensor1.txt";
+    const char* file = "TempSensor.txt";
 
     count = readFile(file, sensor1);
     assert(count == 3);
-    assert(sensor1[0] == 10);
-    assert(sensor1[1] == 11);
-    assert(sensor1[2] == 12);
+    assert(sensor1[0] == 25);
+    assert(sensor1[1] == 26);
+    assert(sensor1[2] == 27);
 }
 
 void test_sender(void)
 {
-    // No sensor values are processed yet
-    // Only the csv header will be packed in the send buffer
+    memset(test_buff,0,200);
+    int val[] = {25,30,35};
+
+    // Frame multiple sensor values in csv format
+    frameValueAsCsv(test_buff, val, 3);
+    assert(strcmp(test_buff,"25, 30, 35\n") == 0);
+
+    //test case to find the min value in an array function
+    assert(findMinInAnArray(val,3) == 25);
+    int val1[] = {50,50,50};
+    assert(findMinInAnArray(val1,3) == 50);
+
+    // Test for the csv header
     sendSensorData(&test_print);
-    assert(strcmp(test_buff,"Battery Temperature, Charge Rate\n") == 0);
+    assert(strncmp(test_buff,STREAM_HEADER,strlen(STREAM_HEADER)) == 0);
 }
