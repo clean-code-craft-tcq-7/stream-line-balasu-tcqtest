@@ -4,11 +4,6 @@
 #include "sender.h"
 
 
-int main(void)
-{
-    return 0;
-}
-
 int readFile(char* filePath, int* data)
 {
     FILE* fl;
