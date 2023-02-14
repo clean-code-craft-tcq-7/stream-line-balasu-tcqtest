@@ -64,7 +64,9 @@ int findMinInAnArray(int* arr, int cnt)
     for(idx = 1; idx < cnt; idx++)
     {
         if(arr[idx] < min)
+        {
             min = arr[idx];
+        }
     }
 
     return min;
