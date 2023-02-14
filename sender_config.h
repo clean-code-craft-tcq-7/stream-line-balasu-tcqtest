@@ -1,7 +1,7 @@
 
 #define MAX_SENSOR_SUPPORTED    2
 
-#define STREAM_HEADER "Battery Temperature, Charge Rate"
+#define STREAM_HEADER "Battery Temperature, SOC Value"
 
 
-extern const char* sensorFileName[MAX_SENSOR_SUPPORTED];
+extern char sensorFileName[MAX_SENSOR_SUPPORTED][100];

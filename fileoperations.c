@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "fileoperations.h"
 
 int readFile(const char* filePath, int* data)
@@ -32,4 +33,9 @@ int readFile(const char* filePath, int* data)
     fclose (fl);
 
     return count;
+}
+
+void printToConsole(char* buff)
+{
+    write(STDOUT_FILENO, buff, strlen(buff));
 }

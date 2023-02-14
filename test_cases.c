@@ -24,7 +24,7 @@ void test_sensorRead(void)
     // The sensor values will be stored in files with "," separated.
     int sensor1[10];
     int count = 0;
-    const char* file = "TempSensor.txt";
+    const char* file = "TempSensor_Test.txt";
 
     count = readFile(file, sensor1);
     assert(count == 3);
@@ -36,6 +36,8 @@ void test_sensorRead(void)
 void test_sender(void)
 {
     memset(test_buff,0,200);
+    strcpy((char*)sensorFileName[0], "TempSensor_Test.txt");
+    strcpy((char*)sensorFileName[1], "SOCSensor_Test.txt");
     int val[] = {25,30,35};
 
     // Frame multiple sensor values in csv format
@@ -46,8 +48,15 @@ void test_sender(void)
     assert(findMinInAnArray(val,3) == 25);
     int val1[] = {50,50,50};
     assert(findMinInAnArray(val1,3) == 50);
+    int val2[] = {19,10,12};
+    assert(findMinInAnArray(val2,3) == 10);
 
-    // Test for the csv header
+    // Test case for the csv header
     sendSensorData(&test_print);
     assert(strncmp(test_buff,STREAM_HEADER,strlen(STREAM_HEADER)) == 0);
+
+    // Test the two sensor data output in csv format with 3 sample data
+    memset(test_buff,0,200);
+    sendSensorData(&test_print);
+    assert(strcmp(test_buff,"Battery Temperature, SOC Value\n25, 10\n26, 11\n27, 12\n") == 0);
 }
