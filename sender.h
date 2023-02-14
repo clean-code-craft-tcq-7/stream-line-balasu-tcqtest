@@ -1,1 +1,4 @@
-int readFile(char* filePath, int* data);
+void sendSensorData(void (*fp_sender)(char*));
+
+
+

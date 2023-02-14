@@ -1,37 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "sender_config.h"
 #include "sender.h"
+#include "fileoperations.h"
 
-
-int readFile(char* filePath, int* data)
+void sendSensorData(void (*fp_sender)(char*))
 {
-    FILE* fl;
-    long fl_size;
-    char * buffer;
-    size_t res;
-    char * strtok_res;
-    int count = 0;
+    char buffer[200];
 
-    fl = fopen ( filePath , "r+" );
-    fseek (fl , 0 , SEEK_END);
-    fl_size = ftell (fl);
-    rewind (fl);
+    sprintf(buffer, "%s\n",STREAM_HEADER);
 
-    buffer = (char*) malloc (sizeof(char)*fl_size);
-
-    res = fread (buffer,1,fl_size,fl);
-
-    strtok_res = strtok(buffer, ",");
-    while (strtok_res != NULL)
-    {
-        *data = atoi(strtok_res);
-        data++;
-        count++;
-        strtok_res = strtok (NULL, ",");
-    }
-
-    fclose (fl);
-
-    return count;
+    fp_sender(buffer);
 }
