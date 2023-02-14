@@ -13,10 +13,11 @@ TEST_CASE("Read sensor samples from file. Check first 3 samples")
 
     int sensor1[10];
     int count = 0;
+    char* file = "sensor1.txt";
 
-    count = readFile("sensor1.txt", sensor1);
-    REQUIRE(count, 3);
-    REQUIRE(sensor1[0], 10);
-    REQUIRE(sensor1[1], 11);
-    REQUIRE(sensor1[2], 12);
+    count = readFile(file, sensor1);
+    REQUIRE(count == 3);
+    REQUIRE(sensor1[0] == 10);
+    REQUIRE(sensor1[1] == 11);
+    REQUIRE(sensor1[2] == 12);
 }
