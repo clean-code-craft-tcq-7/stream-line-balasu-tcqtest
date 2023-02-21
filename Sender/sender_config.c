@@ -3,7 +3,7 @@
 
 char sensorFileName[MAX_SENSOR_SUPPORTED][100] =
 {
-                "TempSensor.txt",
-                "SOCSensor.txt"
+                "Sender/TempSensor.txt",
+                "Sender/SOCSensor.txt"
 };
 
