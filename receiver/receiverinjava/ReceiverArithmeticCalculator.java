@@ -1,40 +1,36 @@
 package receiverinjava;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
-public class ReceiverArithmeticCalculator {
-	List<Double> values = new ArrayList<>();
-	double sum = 0.0;
+public class ReceiverArithmeticCalculator extends ReceiverDataManipulator {
 
 	public void ReceiverCalculations(String filePath) throws NumberFormatException, IOException {
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				double value = Double.parseDouble(line);
-				values.add(value);
-				sum += value;
-				if (values.size() >= 5) {
-					double average = sum / values.size();
-					double max = Double.MIN_VALUE;
-					double min = Double.MAX_VALUE;
+		try (Scanner scanner = new Scanner(filePath)) {
+			int[] values = new int[5];
+			int count = 0;
+			double sum = 0;
+			double max = Integer.MIN_VALUE;
+			double min = Integer.MAX_VALUE;
 
-					for (double senderdata : values) {
-						if (senderdata > max) {
-							max = senderdata;
-						}
-						if (senderdata < min) {
-							min = senderdata;
-						}
+			while (scanner.hasNextInt()) {
+				int value = scanner.nextInt();
+
+				max = Math.max(max, value);
+				min = Math.min(min, value);
+
+				sum += value;
+				if (count < 5) {
+					values[count] = value;
+				} else {
+					sum -= values[0];
+					for (int i = 0; i < 4; i++) {
+						values[i] = values[i + 1];
 					}
-					ReceiverMessage.printMessage(max, min, average);
-					double oldestValue = values.get(0);
-					values.remove(0);
-					sum -= oldestValue;
+					values[4] = value;
 				}
+				count++;
+				double movingAverage = (count < 5) ? sum / count : sum / 5;
 			}
 		}
 	}
